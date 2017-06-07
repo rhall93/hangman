@@ -262,7 +262,7 @@ Status test_string_extraction_contains_null_byte(char* buffer, int length)
    if(status == FAILURE)
    {
       strncpy(buffer, "test_string_extraction_contains_null_byte\n"
-                        "my_string_extraction does not contain null byte", length);
+                        "my_string_extraction does not contain null byte\n", length);
    }
 
    my_string_destroy(&hString);
@@ -275,7 +275,7 @@ Status test_string_insertion_writes_string(char* buffer, int length)
    Status status;
    int i;
 
-   hString = my_string_init_c_string("hello");
+   hString = my_string_init_c_string("hello\n");
 
    i = my_string_insertion(hString, stdout);
 
@@ -288,7 +288,7 @@ Status test_string_insertion_writes_string(char* buffer, int length)
       {
          status = FAILURE;
          strncpy(buffer, "test_string_insertions_writes_string\n"
-                           "my_string_insertion does not write string", length);
+                           "my_string_insertion does not write string\n", length);
       }
    
    my_string_destroy(&hString);
@@ -317,7 +317,7 @@ Status test_string_push_back_increases_size(char* buffer, int length)
       {
          status = FAILURE;
          strncpy(buffer, "test_string_push_back_increases_size\n"
-                           "my_string_push_back does not increase size", length);
+                           "my_string_push_back does not increase size\n", length);
       }
    
    my_string_destroy(&hString);
@@ -346,7 +346,31 @@ Status test_string_push_back_appends_appropriate_char(char* buffer, int length)
       {
          status = FAILURE;
          strncpy(buffer, "test_string_push_back_appends_appropriate_char\n"
-                           "my_string_push_back does not append appropriate char", length);
+                           "my_string_push_back does not append appropriate char\n", length);
+      }
+   
+   my_string_destroy(&hString);
+   return status;
+}
+
+Status test_string_push_back_returns_SUCCESS_for_good_push(char* buffer, int length)
+{
+   MY_STRING hString = NULL;
+   Status status;
+   char ch = '!';
+  
+   hString = my_string_init_c_string("hello");
+   status = my_string_push_back(hString, ch);
+   
+      if(status == SUCCESS)
+      {
+         status = SUCCESS;  
+         strncpy(buffer, "test_string_push_back_returns_SUCCESS_for_good_push\n", length);
+      }
+      else
+      {
+         strncpy(buffer, "test_string_push_back_returns_SUCCESS_for_good_push\n"
+                           "my_string_push_back does not return SUCCESS for good push\n", length);
       }
    
    my_string_destroy(&hString);
@@ -375,7 +399,7 @@ Status test_string_pop_back_decreases_size(char* buffer, int length)
       {
          status = FAILURE;
          strncpy(buffer, "test_string_pop_back_decreases_size\n"
-                           "my_string_pop_back does not decrease size", length);
+                           "my_string_pop_back does not decrease size\n", length);
       }
    
    my_string_destroy(&hString);
@@ -407,11 +431,67 @@ Status test_string_pop_back_pops_appropriate_char(char* buffer, int length)
       {
          status = FAILURE;
          strncpy(buffer, "test_string_pop_back_pops_appropriate_char\n"
-                           "my_string_pop_back does not pop appropriate char", length);
+                           "my_string_pop_back does not pop appropriate char\n", length);
       }
    
    my_string_destroy(&hString);
    return status;
+}
+
+Status test_string_pop_back_returns_FAILURE_for_empty_string(char* buffer, int length)
+{
+	MY_STRING hString = NULL;
+   Status status;
+   
+   
+
+   hString = my_string_init_default();
+
+
+   status = my_string_pop_back(hString);
+ 
+
+   if(status == FAILURE)
+      {
+         status = SUCCESS;  
+         strncpy(buffer, "test_string_pop_back_returns_FAILURE_for_empty_string\n", length);
+      }
+      else
+      {
+         status = FAILURE;
+         strncpy(buffer, "test_string_pop_back_returns_FAILURE_for_empty_string\n"
+                           "my_string_pop_back does not return FAILURE for empty string\n", length);
+      }
+   
+   my_string_destroy(&hString);
+   return status;	
+}
+
+Status test_string_pop_back_returns_SUCCESS_for_good_pop(char* buffer, int length)
+{
+   MY_STRING hString = NULL;
+   Status status;
+   
+   
+
+   hString = my_string_init_c_string("hello");
+
+
+   status = my_string_pop_back(hString);
+ 
+
+   if(status == SUCCESS)
+      { 
+         strncpy(buffer, "test_string_pop_back_returns_SUCCESS_for_good_pop\n", length);
+      }
+      else
+      {
+         strncpy(buffer, "test_string_pop_back_returns_SUCCESS_for_good_pop\n"
+                           "my_string_pop_back does not return SUCCESS for a good pop\n", length);
+      }
+   
+   my_string_destroy(&hString);
+   return status;	
 }
 
 Status test_string_at_returns_a_char_pointer(char* buffer, int length)
@@ -432,7 +512,7 @@ Status test_string_at_returns_a_char_pointer(char* buffer, int length)
       {
          status = FAILURE;
          strncpy(buffer, "test_string_at_returns_a_char_pointer\n"
-                           "my_string_pop_back does not return a char pointer", length);
+                           "my_string_pop_back does not return a char pointer\n", length);
       }
    
    my_string_destroy(&hString);
@@ -457,10 +537,159 @@ Status test_string_at_returns_the_appropriate_char_pointer(char* buffer, int len
       {
          status = FAILURE;
          strncpy(buffer, "test_string_at_returns_the_appropriate_char_pointer\n"
-                           "my_string_pop_back does not return the appropriate char pointer", length);
+                           "my_string_pop_back does not return the appropriate char pointer\n", length);
       }
    
    my_string_destroy(&hString);
    return status;
 }
 
+Status test_string_concat_increases_size_appropriately(char* buffer, int length)
+{
+	MY_STRING hString1 = NULL;
+	MY_STRING hString2 = NULL;
+	Status status;
+	int sum;
+
+	hString1 = my_string_init_c_string("hello");
+	hString2 = my_string_init_c_string("world");
+
+	sum = (my_string_get_size(hString1) + my_string_get_size(hString2));
+
+	my_string_concat(hString1, hString2);
+
+	if(my_string_get_size(hString1) != sum)
+	{
+		status = FAILURE;
+		strncpy(buffer, "test_my_string_concat_increases_size_appropriately\n"
+							"my_string_concat does not increase size_appropriately\n", length);
+	}
+
+	else
+	{
+		status = SUCCESS;
+		strncpy(buffer, "test_my_string_concat_increases_size_appropriately\n", length);
+	}
+
+	my_string_destroy(&hString1);
+	my_string_destroy(&hString2);
+	return status;
+
+}
+
+Status test_string_concat_contains_NULL_byte(char* buffer, int length)
+{
+	MY_STRING hString1 = NULL;
+	MY_STRING hString2 = NULL;
+	Status status = FAILURE;
+	char *str;
+	int i = 0;
+
+	hString1 = my_string_init_c_string("hello");
+	hString2 = my_string_init_c_string("world");
+
+	
+	my_string_concat(hString1, hString2);
+
+	str = my_string_get_data(hString1);
+
+
+
+	while(i <= my_string_get_size(hString1))
+	{
+		if(str[i] == '\0')
+		{
+			status = SUCCESS;
+		}
+
+		i++;
+	}
+	
+	if(status == SUCCESS)
+	{
+		strncpy(buffer, "test_string_concat_contains_NULL_byte\n", length);
+	}
+	else
+	{
+		strncpy(buffer, "test_string_concat_contains_NULL_byte\n"
+							"my_string_concat does not contain NULL byte\n", length);
+
+	}
+
+	my_string_destroy(&hString1);
+	my_string_destroy(&hString2);
+	return status;
+
+}
+
+Status test_string_empty_returns_TRUE_for_empty_string(char* buffer, int length)
+{
+	MY_STRING hString = NULL;
+	Boolean boolean;
+	Status status;
+
+	hString = my_string_init_default();
+
+	boolean = my_string_empty(hString);
+	if(boolean == TRUE)
+	{
+		status = SUCCESS;
+		strncpy(buffer, "test_string_empty_returns_TRUE_for_empty_string\n", length);
+	}
+	else
+	{
+		status = FAILURE;
+		strncpy(buffer, "test_string_empty_returns_TRUE_for_empty_string\n"
+							"my_string_empty does not return TRUE for empty string\n", length);
+	}
+
+	my_string_destroy(&hString);
+	return status;
+}
+
+Status test_string_empty_returns_FALSE_for_nonempty_string(char* buffer, int length)
+{
+	MY_STRING hString = NULL;
+	Boolean boolean;
+	Status status;
+
+	hString = my_string_init_c_string("hello");
+	boolean = my_string_empty(hString);
+	if(boolean == FALSE)
+	{
+		status = SUCCESS;
+		strncpy(buffer, "test_string_empty_returns_FALSE_for_nonempty_string\n", length);
+	}
+	else
+	{
+		status = FAILURE;
+		strncpy(buffer, "test_string_empty_returns_FALSE_for_nonempty_string\n"
+							"my_string_empty does not return FALSE for nonempty string\n", length);
+	}
+
+	my_string_destroy(&hString);
+	return status;
+}
+
+Status test_string_destroy_destroys(char* buffer, int length)
+{
+	MY_STRING hString = NULL;
+	Status status;
+
+	hString = my_string_init_c_string("hello");
+	my_string_destroy(&hString);
+
+	if(hString == NULL)
+	{
+		status = SUCCESS;
+		strncpy(buffer, "test_string_destroy_destroys\n", length);
+	}
+	else
+	{
+		status = FAILURE;
+		strncpy(buffer, "test_string_destroy_destroys\n"
+							"my_string_destroy does not destroy\n", length);
+	}
+
+	return status;
+}

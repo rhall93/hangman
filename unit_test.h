@@ -42,11 +42,13 @@ Status test_string_insertion_writes_string(char* buffer, int length);
 
 Status test_string_push_back_increases_size(char* buffer, int length);
 Status test_string_push_back_appends_appropriate_char(char* buffer, int length);
-
+Status test_string_push_back_returns_SUCCESS_for_good_push(char* buffer, int length);
 //Status my_string_pop_back tests
 
 Status test_string_pop_back_decreases_size(char* buffer, int length);
 Status test_string_pop_back_pops_appropriate_char(char* buffer, int length);
+Status test_string_pop_back_returns_FAILURE_for_empty_string(char* buffer, int length);
+Status test_string_pop_back_returns_SUCCESS_for_good_pop(char* buffer, int length);
 
 // my_string_at tests
 
@@ -55,7 +57,15 @@ Status test_string_at_returns_the_appropriate_char_pointer(char* buffer, int len
 
 // my_string_concat tests
 
+Status test_string_concat_increases_size_appropriately(char* buffer, int length);
+Status test_string_concat_contains_NULL_byte(char* buffer, int length);
+
 // my_string_empty tests
 
+Status test_string_empty_returns_TRUE_for_empty_string(char* buffer, int length);
+Status test_string_empty_returns_FALSE_for_nonempty_string(char* buffer, int length);
+
 // my_string_destroy tests
+
+Status test_string_destroy_destroys(char* buffer, int length);
 #endif
