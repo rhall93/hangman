@@ -22,6 +22,7 @@ MY_STRING my_string_init_default(void){
 	  free (pMy_string);
 	  pMy_string = NULL;
 	}	
+  pMy_string->data[0] = '\0';
     }
   return (MY_STRING) pMy_string;
 }
@@ -31,14 +32,15 @@ MY_STRING my_string_init_c_string(const char *c_string){
   int i = 0;
   if (pMy_string != NULL){
     pMy_string->size = strlen(c_string);
-    pMy_string->capacity = strlen(c_string) + 3;
+    pMy_string->capacity = strlen(c_string) + 1;
     pMy_string->data =  (char*) malloc(sizeof(char) * pMy_string->capacity);
     while(c_string[i] != '\0')
       {
 	       pMy_string->data[i] = c_string[i];
 	       i++;
       }
-    pMy_string->data[i+1] = '\0'; 
+    
+    pMy_string->data[i] = '\0'; 
   }
   return (MY_STRING) pMy_string;
 }
@@ -156,7 +158,7 @@ Status my_string_push_back(MY_STRING hMy_string, char item)
   int i = 0;
   int j;
 
-  if(pMy_string->size >= pMy_string->capacity)
+  if(pMy_string->size + 1 >= pMy_string->capacity)
     {
       pMy_string->capacity *= 2;
       temp = (char*)malloc(sizeof(char*) * pMy_string->capacity);
@@ -166,7 +168,7 @@ Status my_string_push_back(MY_STRING hMy_string, char item)
 	  return FAILURE;
 	}
 
-      for(j = 0; j < pMy_string->size; j++)
+      for(j = 0; j <= pMy_string->size; j++)
 	{
 	  temp[j] = pMy_string->data[j]; 
 	}
@@ -191,7 +193,7 @@ Status my_string_pop_back(MY_STRING hMy_string)
   My_string *pMy_string = (My_string*) hMy_string;
   int i = 0;
 
-  if((pMy_string->data == NULL) || (pMy_string->data[i] == '\0'))
+  if(pMy_string->data[i] == '\0')
     return FAILURE;
 
   while(pMy_string->data[i] != '\0')
@@ -234,7 +236,7 @@ Status my_string_concat(MY_STRING hResult, MY_STRING hAppend)
 	  return FAILURE;
 	}
 
-      for(j = 0; j < pResult->size; j++)
+      for(j = 0; j <= pResult->size; j++)
 	{
 	  temp[j] = pResult->data[j]; 
 	}
@@ -244,16 +246,26 @@ Status my_string_concat(MY_STRING hResult, MY_STRING hAppend)
     }
 
   i = 0;
-  while (pResult->data[i] != '\0')
+  while(pResult->data[i] != '\0')
+  {
     i++;
-    
-  for(j = 0; pAppend->data[j] != '\0'; j++)
+  }
+
+  
+  j = 0;
+
+ while(pAppend->data[j] != '\0')
     {
       pResult->data[i] = pAppend->data[j];
       i++;
+      j++;
     }
 
+
   pResult->data[i] = '\0';
+  pResult->size += pAppend->size;
+
+  
 
   return SUCCESS;
 }
@@ -261,15 +273,15 @@ Status my_string_concat(MY_STRING hResult, MY_STRING hAppend)
 Boolean my_string_empty(MY_STRING hMy_string)
 {
   My_string *pMy_string = (My_string*) hMy_string;
-  int i = 0;
-
-  if(pMy_string == NULL)
-    return TRUE;
   
-  if(pMy_string->data[i] == '\0') 
+  if(pMy_string->size == 0)
+  {
     return TRUE;
-
-  return FALSE;
+  }
+  else
+  {
+    return FALSE;
+  }
 }
 
 void my_string_destroy(MY_STRING *phMy_string){
