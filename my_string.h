@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "generic.h"
 
 typedef void* MY_STRING;
 
@@ -38,6 +39,8 @@ char* my_string_at(MY_STRING hMy_string, int index);
 Status my_string_concat(MY_STRING hResult, MY_STRING hAppend);
 
 Boolean my_string_empty(MY_STRING hMy_string);
+
+void my_string_assignment(Item* pLeft, Item Right);
 
 void my_string_destroy(MY_STRING *phMy_string);
 

@@ -1,38 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "my_string.h"
+#define MAX 100
 
 int main(int argc, char *argv[])
 {
-   MY_STRING hMy_string = NULL;
-   MY_STRING hMy_other_string = NULL;
-   char ch;
+    MY_STRING str_array[MAX];
+    int i;
 
-    if(my_string_empty(hMy_string))
-      printf("EMPTY\n");
-  
-  hMy_string = my_string_init_c_string("Hello World");
-  hMy_other_string = my_string_init_c_string("Goodbye World");
-  
-  my_string_push_back(hMy_string, '!');
-  printf("%s\n", my_string_get_data(hMy_string));
-  
-  my_string_pop_back(hMy_string);
-  printf("%s\n", my_string_get_data(hMy_string));
+    for(i = 0; i < MAX; i++)
+    {
+        str_array[i] = NULL;
+    }
 
-  ch = *my_string_at(hMy_string, 1);
-  printf("%cvil ", ch);
-  ch = *my_string_at(hMy_string, 4);
-  printf("%cctopus\n", ch);
-  
-  my_string_concat(hMy_string, hMy_other_string);
-  printf("%s\n", my_string_get_data(hMy_string));
-  
-  if(!my_string_empty(hMy_string))
-    printf("NOT EMPTY\n");
-  
-   my_string_destroy(&hMy_string);
-   my_string_destroy(&hMy_other_string);
-  
-  return 0;
+    str_array[0] = my_string_init_c_string("COPY ME!");
+
+    for(i = 1; i < MAX; i++)
+    {
+        my_string_assignment(&str_array[i], str_array[i-1]);
+    }
+    
+    printf("%s\n", my_string_get_data(str_array[MAX-1]));
+
+    for(i = 0; i < MAX; i++)
+    {
+        my_string_destroy(&str_array[i]);
+    }
+
+    return 0;
 }
+
+

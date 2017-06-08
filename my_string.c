@@ -284,13 +284,47 @@ Boolean my_string_empty(MY_STRING hMy_string)
   }
 }
 
-void my_string_destroy(MY_STRING *phMy_string){
+void my_string_assignment(Item* pLeft, Item Right)
+{
+  My_string *pRight = (My_string*) Right;
+  My_string *ppLeft;
+
+  ppLeft = (My_string*) malloc(sizeof(My_string));
+  *pLeft = ppLeft;
+
+  if(ppLeft != NULL)
+  {
+    ppLeft->size = pRight->size;
+    ppLeft->capacity = pRight->capacity;
+
+    ppLeft->data = (char*) malloc(sizeof(char) * pRight->capacity);
+    if(ppLeft->data == NULL)
+    {
+      free(ppLeft);
+      ppLeft = NULL;
+    }
+
+
+    strcpy(ppLeft->data, pRight->data);
+   /* char *x = ppLeft->data;
+    while(*pRight->data) {
+      *ppLeft->data = *pRight->data;
+      ppLeft->data++;
+      pRight->data++;
+    }
+    *ppLeft->data = '\0';
+    ppLeft->data = x;*/
+
+  }
+}
+
+void my_string_destroy(Item *pItem){
   // write function definition
-  My_string *pMy_string = (My_string*) *phMy_string;
+  My_string *pMy_string = (My_string*) *pItem;
 
  
   free(pMy_string->data);
   pMy_string->data = NULL;
   free(pMy_string);
-  *phMy_string = NULL;
+  *pItem = NULL;
 }
