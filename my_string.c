@@ -1,13 +1,18 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "my_string.h"
 #include <string.h>
+#include <ctype.h>
+#include "my_string.h"
 
-typedef struct my_string{
-  int size;
-  int capacity;
-  char *data;
-}My_string;
+void uppercase(char *str)
+{
+	int i = 0;
+	while(str[i] != '\0')
+	{
+		str[i] = toupper(str[i]);
+		i++;
+	}
+}
 
 MY_STRING my_string_init_default(void){
   // write function definition

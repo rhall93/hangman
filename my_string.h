@@ -1,18 +1,23 @@
 
-#ifndef my_string_h
-#define my_string_h
+#ifndef MY_STRING_H
+#define MY_STRING_H
+
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "generic.h"
+
+typedef struct my_string
+{
+  int size;
+  int capacity;
+  char *data;
+}My_string;
 
 typedef void* MY_STRING;
 
-enum status {FAILURE, SUCCESS};
-typedef enum status Status;
 
-enum boolean {FALSE, TRUE};
-typedef enum boolean Boolean;
+/* String Functions*/
+void uppercase(char *str);
+
 
 MY_STRING my_string_init_default(void);
 
@@ -44,4 +49,5 @@ void my_string_assignment(Item* pLeft, Item Right);
 
 void my_string_destroy(MY_STRING *phMy_string);
 
-#endif /*my_string_h*/
+
+#endif /*MY_STRING_H*/
